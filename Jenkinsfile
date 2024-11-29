@@ -2,20 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Test') {
+            steps {
+                sh 'cd SampleWebApp mvn test'
+            }
+        }
+        stage('Build & Complie') {
             steps {
                 sh 'cd SampleWebApp && mvn clean package'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'cd SampleWebApp && mvn test'
-            }
-        }        
         
-        stage('Deploy to Tomcat server') {
+        stage('Deploy to Tomcat Web Server') {
             steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcatpassword', path: '', url: 'http://18.207.96.127:8080/')], contextPath: 'myapp', war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'tomcatpassword', path: '', url: 'http://3.238.77.174:8080/')], contextPath: 'myapp', war: '**/*.war'
             }
         }
     }
